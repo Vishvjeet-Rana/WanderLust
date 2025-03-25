@@ -5,6 +5,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import methodOverride from "method-override";
+import ejsMate from "ejs-mate";
+import engine from "ejs-mate";
 const app = express();
 
 // __filename and __dirname setup:
@@ -15,6 +17,8 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+app.engine("ejs", engine);
+app.use(express.static(path.join(__dirname, "/public")));
 
 main().catch((err) => console.log(err));
 
@@ -47,6 +51,7 @@ app.delete("/listings/:id", async (req, res) => {
   let { id } = req.params;
   let deletedListing = await Listing.findByIdAndDelete(id);
   console.log(deletedListing);
+
   res.redirect("/listings");
 });
 
