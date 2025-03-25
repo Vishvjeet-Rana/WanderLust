@@ -1,26 +1,55 @@
 <%-layout("/layouts/boilerplate")%>
-<body>
-  <h2>All info about that listing</h2>
-  <ul>
-    <li><%=listing.title%></li>
-    <li>
-      &#8377; <%= !isNaN(Number(listing.price)) && Number(listing.price) !== 0 ?
-      Number(listing.price).toLocaleString("en-IN") : "Price is too high" %>
-    </li>
-    <li><%=listing.description%></li>
-    <li><%=listing.location%></li>
-    <li><%=listing.country%></li>
-  </ul>
 
-  <br /><br /><br />
+<div class="row">
+  <div class="col-8 offset-2">
+    <h2 style="color: #fe424d; font-weight: bold" class="mt-3">
+      All info about selected listing
+    </h2>
+  </div>
 
-  <form action="/listings/<%=listing._id%>/edit" method="GET">
-    <button>Edit</button>
-  </form>
+  <div class="card col-6 offset-2 mt-3 show-card">
+    <img
+      src="<%=listing.image%>"
+      class="card-img-top show-image object-fit-cover"
+      alt="listing_image"
+    />
+    <div class="card-body">
+      <p class="card-text">
+        <b><%=listing.title%></b><br />
+        &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") :
+        'N/A' %> /night <br />
+        <%=listing.description%> <br />
+        <%=listing.location%> <br />
+        <%=listing.country%>
+      </p>
+    </div>
 
-  <br />
-
-  <form action="/listings/<%=listing._id%>?_method=DELETE" method="POST">
-    <button>Delete</button>
-  </form>
-</body>
+    <div class="btns mt-4">
+      <form
+        class="edit-btn-show"
+        action="/listings/<%=listing._id%>/edit"
+        method="GET"
+      >
+        <button
+          style="background-color: rgb(90, 121, 44); color: white; border: none"
+          class="btn btn-dark"
+        >
+          Edit
+        </button>
+      </form>
+      <br />
+      <form
+        class="dlt-btn-show"
+        action="/listings/<%=listing._id%>?_method=DELETE"
+        method="POST"
+      >
+        <button
+          style="background-color: #fe424d; color: white; border: none"
+          class="btn btn-dark"
+        >
+          Delete
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

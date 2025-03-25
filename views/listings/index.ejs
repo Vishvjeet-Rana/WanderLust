@@ -1,6 +1,36 @@
 <%- layout("/layouts/boilerplate")%>
 <body>
-  <h2>All Listings</h2>
+  <div class="container">
+    <h2 style="color: #fe424d; font-weight: bold">WanderLust</h2>
+    <br />
+    <div
+      class="row row-cols-xl-3 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4"
+    >
+      <% for(let listing of allListings) { %>
+      <a class="card-anchor" href="listings/<%=listing._id%>">
+        <div class="col main-card">
+          <div class="card h-100">
+            <img
+              src="<%= listing.image %>"
+              class="card-img-top object-fit-cover"
+              alt="listing_image"
+              style="height: 250px"
+            />
+            <div class="card-img-overlay"></div>
+            <div class="card-body">
+              <p class="card-text">
+                <b><%=listing.title%></b>
+                <br />
+                &#8377; <%= listing.price ?
+                listing.price.toLocaleString("en-IN") : 'N/A' %> /night
+              </p>
+            </div>
+          </div>
+        </div>
+      </a>
+      <% } %>
+    </div>
+  </div>
 
   <ul>
     <% for(let listing of allListings) { %>
