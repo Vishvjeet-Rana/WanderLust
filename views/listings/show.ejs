@@ -46,6 +46,7 @@
         <button
           style="background-color: #fe424d; color: white; border: none"
           class="btn btn-dark"
+          onclick="return handleDelete(event)"
         >
           Delete
         </button>
@@ -53,3 +54,13 @@
     </div>
   </div>
 </div>
+
+<script>
+  function handleDelete(event) {
+    event.preventDefault();
+    const userConfirmed = confirm("Are you sure you want to delete this?");
+    if (userConfirmed) {
+      event.target.closest("form").submit(); // Submit the form if confirmed
+    }
+  }
+</script>

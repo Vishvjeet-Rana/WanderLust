@@ -67,11 +67,11 @@ body {
   margin-bottom: 2rem;
   border-radius: 1.2rem !important;
   border: none !important;
-  transition: box-shadow 0.3s ease-in-out;
+  transition: scale 0.3s ease-in-out;
 }
 
 .card:hover {
-  box-shadow: 2px 2px 15px #222;
+  scale: 1.05;
 }
 
 .card-img-top {
@@ -117,7 +117,7 @@ label {
 }
 
 .show-card {
-  box-shadow: none !important;
+  scale: none !important;
 }
 
 .btns {
