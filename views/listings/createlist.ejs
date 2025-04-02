@@ -6,15 +6,26 @@
       <h2 style="color: #fe424d; font-weight: bold" class="mb-3">
         Create New Listing
       </h2>
-      <form action="/listings" method="POST">
+      <form
+        action="/listings"
+        method="POST"
+        novalidate
+        class="needs-validation"
+      >
         <div class="mb-3">
           <label for="title" class="form-label">Title :</label>
-          <input class="form-control" type="text" name="listing[title]" />
+          <input
+            required
+            class="form-control"
+            type="text"
+            name="listing[title]"
+          />
         </div>
 
         <div class="mb-3">
           <label for="description" class="form-label">Description :</label>
           <textarea
+            required
             class="form-control"
             type="text"
             name="listing[description]"
@@ -31,18 +42,33 @@
         <div class="row">
           <div class="mb-3 col-md-4">
             <label for="price" class="form-label">Price :</label>
-            <input class="form-control" type="number" name="listing[price]" />
+            <input
+              required
+              class="form-control"
+              type="number"
+              name="listing[price]"
+            />
           </div>
 
           <div class="mb-3 col-md-8">
             <label for="country" class="form-label">Country :</label>
-            <input class="form-control" type="text" name="listing[country]" />
+            <input
+              required
+              class="form-control"
+              type="text"
+              name="listing[country]"
+            />
           </div>
         </div>
 
         <div class="mb-3">
           <label for="location" class="form-label">Location :</label>
-          <input class="form-control" type="text" name="listing[location]" />
+          <input
+            required
+            class="form-control"
+            type="text"
+            name="listing[location]"
+          />
         </div>
 
         <button
