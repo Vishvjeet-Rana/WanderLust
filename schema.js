@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-const listingSchema = Joi.object({
+export const listingSchema = Joi.object({
   listing: Joi.object({
     title: Joi.string().required(),
     description: Joi.string().required(),
@@ -11,4 +11,9 @@ const listingSchema = Joi.object({
   }).required(),
 });
 
-export default listingSchema;
+export const reviewSchema = Joi.object({
+  review: Joi.object({
+    rating: Joi.number().required().min(1).max(5),
+    comment: Joi.string().required(),
+  }).required(),
+});

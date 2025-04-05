@@ -2,8 +2,8 @@
 
 <div class="row">
   <div class="col-8 offset-2">
-    <h2 style="color: #fe424d; font-weight: bold" class="mt-3">
-      All info about selected listing
+    <h2 style="color: #ba575e; font-weight: bold" class="mt-3">
+      <%=listing.title%>
     </h2>
   </div>
 
@@ -14,10 +14,9 @@
       alt="listing_image"
     />
     <div class="card-body">
-      <p class="card-text">
-        <b><%=listing.title%></b><br />
+      <b><p class="card-text">
         &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") :
-        'N/A' %> /night <br />
+        'N/A' %> /night </b> <br />
         <%=listing.description%> <br />
         <%=listing.location%> <br />
         <%=listing.country%>
@@ -52,7 +51,31 @@
         </button>
       </form>
     </div>
+    <hr>
+    <br>
+  <!-- review section -->
+   <div class="col-8 offset-3">
+    <h4 style="font-weight: bold; color: #fe424d;">Leave A Reviews:</h4>
+    <form action="/listings/<%=listing._id%>/reviews" method="POST" novalidate class="needs-validation">
+      <div>
+        <label class="form-label" for="rating">Ratings:</label>
+        <input class="form-range" name="review[rating]" type="range" min="1" max="5" id="rating">
+      </div>
+      <div>
+        <label class="form-label" for="comment">
+        Comment
+      </label>
+
+    <textarea class="form-control" name="review[comment]" id="comment" cols="35" rows="5" required></textarea>
+    <div class="invalid-feedback">Please give a valid feedback</div>
+            <div class="valid-feedback">Thanks for feedback!</div>
+    </div>
+    <br>
+    <button class="btn btn-dark">Submit</button>      
+    </form>
+   </div>
   </div>
+
 </div>
 
 <script>

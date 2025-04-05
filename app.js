@@ -9,7 +9,9 @@ import ejsMate from "ejs-mate";
 import engine from "ejs-mate";
 import wrapAsync from "./utils/wrapAsync.js";
 import ExpessError from "./utils/ExpressError.js";
-import listingSchema from "./schema.js";
+import { listingSchema } from "./schema.js";
+import { reviewSchema } from "./schema.js";
+import Review from "./model/review.js";
 
 const app = express();
 
@@ -32,6 +34,17 @@ async function main() {
 
 function validateListing(req, res, next) {
   let { error } = listingSchema.validate(req.body);
+
+  if (error) {
+    let errMsg = error.details.map((el) => el.message).join(",");
+    throw new ExpessError(404, errMsg);
+  } else {
+    next();
+  }
+}
+
+function validateReview(req, res, next) {
+  let { error } = reviewSchema.validate(req.body);
 
   if (error) {
     let errMsg = error.details.map((el) => el.message).join(",");
@@ -106,6 +119,22 @@ app.get(
     let { id } = req.params;
     let listing = await Listing.findById(id);
     res.render("listings/show.ejs", { listing });
+  })
+);
+
+app.post(
+  "/listings/:id/reviews",
+  validateReview,
+  wrapAsync(async (req, res) => {
+    let listing = await Listing.findById(req.params.id);
+    let newReview = new Review(req.body.review);
+
+    listing.reviews.push(newReview);
+
+    await newReview.save();
+    await listing.save();
+
+    res.redirect(`/listings/${listing._id}`);
   })
 );
 

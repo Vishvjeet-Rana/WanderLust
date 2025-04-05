@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Review from "./review.js";
 const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
@@ -27,6 +28,12 @@ const listingSchema = new Schema({
   country: {
     type: String,
   },
+  reviews: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Review",
+    },
+  ],
 });
 
 const Listing = mongoose.model("Listing", listingSchema);
