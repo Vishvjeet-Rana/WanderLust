@@ -74,8 +74,27 @@
     <button class="btn btn-dark">Submit</button>      
     </form>
    </div>
-  </div>
+   
+  <!-- showing reviews -->
 
+  <h3 class="mt-5"><b>All Reviews</b></h3>
+  
+  <div class="row">
+    <% listing.reviews.forEach((rev) => { %>
+      <div class="card mb-2 p-2 card review-card col-5 ms-3 mb-3">
+        <div class="card-body" >
+          <h5 class="card-title"><b>Jane Doe</b></h5>
+          <p class="card-text"><strong>Rating:</strong> <%= rev.rating %> star</p>
+          <p class="card-text"><strong>Review:</strong> <%= rev.comment %></p>
+        </div>
+        <!-- <strong>⭐ Rating:</strong> <%= rev.rating %> <br />
+        <strong>📝 Comment:</strong> <%= rev.comment %> -->
+      </div>
+    <% }) %>
+  </div>
+  
+  
+  </div>
 </div>
 
 <script>

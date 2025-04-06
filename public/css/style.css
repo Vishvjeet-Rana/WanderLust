@@ -128,3 +128,8 @@ label {
 .edit-btn-show {
   margin-right: 5px;
 }
+
+/* review section */
+.review-card {
+  border: 1px solid gray !important;
+}
