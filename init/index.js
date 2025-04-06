@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import data from "./listing.js";
+import data from "./data.js";
 import Listing from "../model/listing.js";
 
 main().catch((err) => console.log(err));
