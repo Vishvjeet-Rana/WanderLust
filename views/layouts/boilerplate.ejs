@@ -28,7 +28,10 @@
   </head>
   <body>
     <%- include("../includes/navbar")%>
-    <div class="boilerplate-container"><%- body %></div>
+
+    <div class="boilerplate-container">
+      <%- include("../includes/flash")%> <%- body %>
+    </div>
 
     <%- include("../includes/footer")%>
     <script

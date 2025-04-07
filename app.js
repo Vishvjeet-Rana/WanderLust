@@ -4,12 +4,12 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import methodOverride from "method-override";
-import ejsMate from "ejs-mate";
 import engine from "ejs-mate";
 import ExpessError from "./utils/ExpressError.js";
 import listings from "./routes/listing.js";
 import reviews from "./routes/review.js";
 import session from "express-session";
+import flash from "connect-flash";
 
 const app = express();
 
@@ -24,6 +24,12 @@ app.use(methodOverride("_method"));
 app.engine("ejs", engine);
 app.use(express.static(path.join(__dirname, "/public")));
 
+main().catch((err) => console.log(err));
+
+async function main() {
+  await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust");
+}
+
 const sessionOptions = {
   secret: "mysupersecret",
   resave: false,
@@ -35,16 +41,17 @@ const sessionOptions = {
   },
 };
 
-app.use(session(sessionOptions));
-
-main().catch((err) => console.log(err));
-
-async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust");
-}
-
 app.get("/", (req, res) => {
   res.send("hello this is root");
+});
+
+app.use(session(sessionOptions));
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
 });
 
 // listing route
