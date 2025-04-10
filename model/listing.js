@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Review from "./review.js";
+import User from "./user.js";
 const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
@@ -34,6 +35,10 @@ const listingSchema = new Schema({
       ref: "Review",
     },
   ],
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 listingSchema.post("findOneAndDelete", async (listing) => {
