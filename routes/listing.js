@@ -1,21 +1,9 @@
 import express from "express";
 import wrapAsync from "../utils/wrapAsync.js";
 import Listing from "../model/listing.js";
-import { listingSchema } from "../schema.js";
-import ExpessError from "../utils/ExpressError.js";
-import { isLoggedIn } from "../middleware.js";
+import { isLoggedIn, isOwner, validateListing } from "../middleware.js";
+
 const router = express.Router({ mergeParams: true }); // ✅ Important fix
-
-function validateListing(req, res, next) {
-  let { error } = listingSchema.validate(req.body);
-
-  if (error) {
-    let errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpessError(404, errMsg);
-  } else {
-    next();
-  }
-}
 
 // all listings - change to just "/"
 router.get(
@@ -28,7 +16,7 @@ router.get(
 
 // new form route - move this before /:id routes
 router.get("/new", isLoggedIn, (req, res) => {
-  console.log(req.user);
+  // console.log(req.user);
 
   res.render("listings/createlist.ejs");
 });
@@ -37,6 +25,7 @@ router.get("/new", isLoggedIn, (req, res) => {
 router.get(
   "/:id/edit",
   isLoggedIn,
+  isOwner,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findById(id);
@@ -52,6 +41,7 @@ router.get(
 router.put(
   "/:id",
   isLoggedIn,
+  isOwner,
   validateListing,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
@@ -65,6 +55,7 @@ router.put(
 router.delete(
   "/:id",
   isLoggedIn,
+  isOwner,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);

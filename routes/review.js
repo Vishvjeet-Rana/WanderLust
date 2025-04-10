@@ -1,22 +1,10 @@
 import express from "express";
 import wrapAsync from "../utils/wrapAsync.js";
-import ExpessError from "../utils/ExpressError.js";
 import Listing from "../model/listing.js";
-import { reviewSchema } from "../schema.js";
 import Review from "../model/review.js";
+import { validateReview } from "../middleware.js";
 
 const router = express.Router({ mergeParams: true }); // ✅ Important fix
-
-function validateReview(req, res, next) {
-  let { error } = reviewSchema.validate(req.body);
-
-  if (error) {
-    let errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpessError(404, errMsg);
-  } else {
-    next();
-  }
-}
 
 // adding a review
 router.post(

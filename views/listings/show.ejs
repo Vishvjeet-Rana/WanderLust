@@ -26,7 +26,6 @@
       <p class="card-text"><%=listing.country%></p>
     </div>
 
-    <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
     <div class="btns mt-4">
       <form
         class="edit-btn-show"
@@ -55,7 +54,7 @@
         </button>
       </form>
     </div>
-    <%}%>
+
     <hr />
     <br />
     <!-- review section -->
