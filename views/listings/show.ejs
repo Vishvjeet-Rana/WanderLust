@@ -26,6 +26,8 @@
       <p class="card-text"><%=listing.country%></p>
     </div>
 
+    <!-- edit and dlt buttons -->
+    <% if(currUser && listing.owner._id.equals(currUser._id)) {%>
     <div class="btns mt-4">
       <form
         class="edit-btn-show"
@@ -54,12 +56,14 @@
         </button>
       </form>
     </div>
+    <%}%>
 
     <hr />
     <br />
     <!-- review section -->
+    <%if(currUser) {%>
     <div class="col-8 offset-3">
-      <h4 style="font-weight: bold; color: #fe424d">Leave A Reviews:</h4>
+      <h4 style="font-weight: bold; color: #fe424d">Leave A Review:</h4>
       <form
         action="/listings/<%=listing._id%>/reviews"
         method="POST"
@@ -95,6 +99,7 @@
         <button class="btn btn-dark">Submit</button>
       </form>
     </div>
+    <%}%>
 
     <!-- showing reviews -->
 
@@ -104,7 +109,7 @@
       <% listing.reviews.forEach((rev) => { %>
       <div class="card mb-2 p-2 card review-card col-5 ms-3 mb-3">
         <div class="card-body">
-          <h5 class="card-title"><b>Jane Doe</b></h5>
+          <h5 class="card-title"><b>@<%=rev.author.username%></b></h5>
           <p class="card-text">
             <strong>Rating:</strong> <%= rev.rating %> star
           </p>

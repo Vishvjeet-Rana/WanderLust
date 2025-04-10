@@ -1,4 +1,5 @@
 import Listing from "./model/listing.js";
+import Review from "./model/review.js";
 import { listingSchema, reviewSchema } from "./schema.js";
 import ExpessError from "./utils/ExpressError.js";
 
@@ -52,4 +53,17 @@ export const validateReview = (req, res, next) => {
   } else {
     next();
   }
+};
+
+export const isReviewAutor = async (req, res, next) => {
+  let { id, reviewId } = req.params;
+  let review = await Review.findById(reviewId);
+  if (!review.author._id.equals(res.locals.currUser._id)) {
+    req.flash(
+      "error",
+      "You are not author of this review. You can't do manipulations."
+    );
+    return res.redirect(`/listings/${id}`);
+  }
+  next();
 };
