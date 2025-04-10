@@ -26,6 +26,10 @@ body {
   color: #222 !important;
 }
 
+.signup-link {
+  color: #fe424d !important;
+}
+
 .f-info {
   display: flex;
   flex-wrap: wrap;

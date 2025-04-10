@@ -3,6 +3,7 @@ import wrapAsync from "../utils/wrapAsync.js";
 import Listing from "../model/listing.js";
 import { listingSchema } from "../schema.js";
 import ExpessError from "../utils/ExpressError.js";
+import isLoggedIn from "../middleware.js";
 const router = express.Router({ mergeParams: true }); // ✅ Important fix
 
 function validateListing(req, res, next) {
@@ -26,18 +27,16 @@ router.get(
 );
 
 // new form route - move this before /:id routes
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
   console.log(req.user);
-  if (!req.isAuthenticated()) {
-    req.flash("error", "You must be logged in to create a new listing.");
-    return res.redirect("/login");
-  }
+
   res.render("listings/createlist.ejs");
 });
 
 // edit route
 router.get(
   "/:id/edit",
+  isLoggedIn,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findById(id);
@@ -52,6 +51,7 @@ router.get(
 // update route
 router.put(
   "/:id",
+  isLoggedIn,
   validateListing,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
@@ -64,6 +64,7 @@ router.put(
 // delete route
 router.delete(
   "/:id",
+  isLoggedIn,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
