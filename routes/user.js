@@ -4,6 +4,7 @@ import User from "../model/user.js";
 import ExpessError from "../utils/ExpressError.js";
 import wrapAsync from "../utils/wrapAsync.js";
 import passport from "passport";
+import { saveRedirectUrl } from "../middleware.js";
 
 router.get("/signup", (req, res) => {
   res.render("users/signup.ejs");
@@ -37,13 +38,15 @@ router.get("/login", (req, res) => {
 
 router.post(
   "/login",
+  saveRedirectUrl,
   passport.authenticate("local", {
     failureRedirect: "/login",
     failureFlash: true,
   }),
   wrapAsync(async (req, res) => {
     req.flash("success", "Welcome back to WanderLust !");
-    res.redirect("/listings");
+    let redirectUrl = res.locals.redirectUrl || "/listings";
+    res.redirect(redirectUrl);
   })
 );
 

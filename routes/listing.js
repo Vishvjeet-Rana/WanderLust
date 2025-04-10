@@ -3,7 +3,7 @@ import wrapAsync from "../utils/wrapAsync.js";
 import Listing from "../model/listing.js";
 import { listingSchema } from "../schema.js";
 import ExpessError from "../utils/ExpressError.js";
-import isLoggedIn from "../middleware.js";
+import { isLoggedIn } from "../middleware.js";
 const router = express.Router({ mergeParams: true }); // ✅ Important fix
 
 function validateListing(req, res, next) {
