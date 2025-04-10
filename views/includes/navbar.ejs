@@ -15,8 +15,29 @@
         <a class="nav-link" href="/">Home</a>
         <a class="nav-link" href="/listings">All Listings</a>
         <a class="nav-link" href="/listings/new">Add New Listing</a>
-        <a class="nav-link signup-link" href="/signup">SignUp</a>
+      </div>
+      <div class="navbar-nav ms-auto">
+        <% if(!currUser) {%>
+        <a class="nav-link" href="/signup">SignUp</a>
+        <a class="nav-link" href="/login">LogIn</a>
+        <%}%> <% if(currUser) {%>
+        <a class="nav-link signup-link" href="/logout">
+          <button onclick="confirmLogout(event)" class="btn btn-danger">
+            Log out
+          </button>
+        </a>
+        <%}%>
       </div>
     </div>
   </div>
 </nav>
+
+<script>
+  function confirmLogout(event) {
+    event.preventDefault(); // stop default link behavior
+    const confirmed = confirm("Are you sure you want to log out?");
+    if (confirmed) {
+      window.location.href = "/logout"; // This hits the logout route
+    }
+  }
+</script>

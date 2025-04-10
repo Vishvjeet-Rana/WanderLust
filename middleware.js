@@ -1,5 +1,5 @@
 const isLoggedIn = (req, res, next) => {
-  console.log(req.user);
+  console.log(req.path, "....", req.originalUrl);
   if (!req.isAuthenticated()) {
     req.flash("error", "You must be logged in to create a new listing.");
     return res.redirect("/login");
