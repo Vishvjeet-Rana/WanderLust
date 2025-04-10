@@ -6,10 +6,15 @@ import { dirname } from "path";
 import methodOverride from "method-override";
 import engine from "ejs-mate";
 import ExpessError from "./utils/ExpressError.js";
-import listings from "./routes/listing.js";
-import reviews from "./routes/review.js";
 import session from "express-session";
 import flash from "connect-flash";
+import passport from "passport";
+import LocalStrategy from "passport-local";
+import User from "./model/user.js";
+
+import listingsRouter from "./routes/listing.js";
+import reviewsRouter from "./routes/review.js";
+import userRouter from "./routes/user.js";
 
 const app = express();
 
@@ -35,7 +40,7 @@ const sessionOptions = {
   resave: false,
   saveUninitialized: true,
   cookie: {
-    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // one week session
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
   },
@@ -47,6 +52,12 @@ app.get("/", (req, res) => {
 
 app.use(session(sessionOptions));
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
@@ -54,11 +65,24 @@ app.use((req, res, next) => {
   next();
 });
 
+// app.get("/demouser", async (req, res) => {
+//   let fakeUser = new User({
+//     email: "mrfake@gmail.com",
+//     username: "Mr. Fake",
+//   });
+
+//   let registeredUser = await User.register(fakeUser, "helloworld");
+//   res.send(registeredUser);
+// });
+
 // listing route
-app.use("/listings", listings);
+app.use("/listings", listingsRouter);
 
 // review route
-app.use("/listings/:id/reviews", reviews);
+app.use("/listings/:id/reviews", reviewsRouter);
+
+// user route
+app.use("/", userRouter);
 
 app.all("*", (req, res, next) => {
   next(new ExpessError(404, "Page Not Found!"));
