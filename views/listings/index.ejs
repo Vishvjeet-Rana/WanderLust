@@ -1,7 +1,17 @@
 <%- layout("/layouts/boilerplate")%>
 <body>
   <div class="container">
-    <h2 style="color: #fe424d; font-weight: bold">WanderLust</h2>
+    <h2
+      style="
+        color: #fe424d;
+        font-weight: bold;
+        font-family: Dancing Script;
+        font-weight: bolder;
+      "
+    >
+      Welcome, <%if(currUser) {%> <%=currUser.username%>. <%} else {%> Guest.
+      <%}%>
+    </h2>
     <br />
     <div
       class="row row-cols-xl-3 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4"
