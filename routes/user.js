@@ -7,25 +7,26 @@ import passport from "passport";
 import { saveRedirectUrl } from "../middleware.js";
 import { loginUser, logoutUser, signupUser } from "../controllers/user.js";
 
-router.get("/signup", (req, res) => {
-  res.render("users/signup.ejs");
-});
+router
+  .route("/signup")
+  .get((req, res) => {
+    res.render("users/signup.ejs");
+  })
+  .post(wrapAsync(signupUser));
 
-router.post("/signup", wrapAsync(signupUser));
-
-router.get("/login", (req, res) => {
-  res.render("users/login.ejs");
-});
-
-router.post(
-  "/login",
-  saveRedirectUrl,
-  passport.authenticate("local", {
-    failureRedirect: "/login",
-    failureFlash: true,
-  }),
-  wrapAsync(loginUser)
-);
+router
+  .route("/login")
+  .get((req, res) => {
+    res.render("users/login.ejs");
+  })
+  .post(
+    saveRedirectUrl,
+    passport.authenticate("local", {
+      failureRedirect: "/login",
+      failureFlash: true,
+    }),
+    wrapAsync(loginUser)
+  );
 
 router.get("/logout", logoutUser);
 
