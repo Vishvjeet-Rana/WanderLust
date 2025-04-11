@@ -1,5 +1,6 @@
 import User from "../model/user.js";
 
+// sign up
 export const signupUser = async (req, res) => {
   try {
     let { username, email, password } = req.body;
@@ -19,12 +20,16 @@ export const signupUser = async (req, res) => {
   }
 };
 
+// log in
 export const loginUser = async (req, res) => {
-  req.flash("success", "Welcome back to WanderLust !");
-  let redirectUrl = res.locals.redirectUrl || "/listings";
+  req.flash("success", "Welcome back!");
+
+  const redirectUrl = req.session.redirectUrl || "/listings";
+
   res.redirect(redirectUrl);
 };
 
+// log out
 export const logoutUser = (req, res, next) => {
   req.logout((err) => {
     if (err) {

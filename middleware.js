@@ -4,7 +4,7 @@ import { listingSchema, reviewSchema } from "./schema.js";
 import ExpessError from "./utils/ExpressError.js";
 
 export const isLoggedIn = (req, res, next) => {
-  console.log(req.path, "....", req.originalUrl);
+  // console.log(req.path, "....", req.originalUrl);
   if (!req.isAuthenticated()) {
     req.session.redirectUrl = req.originalUrl;
     req.flash("error", "You must be logged in to create a new listing.");
