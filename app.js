@@ -11,6 +11,8 @@ import flash from "connect-flash";
 import passport from "passport";
 import LocalStrategy from "passport-local";
 import User from "./model/user.js";
+import multer from "multer";
+const upload = multer({ dest: "uploads/" });
 
 import listingsRouter from "./routes/listing.js";
 import reviewsRouter from "./routes/review.js";

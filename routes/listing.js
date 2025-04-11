@@ -1,7 +1,8 @@
 import express from "express";
 import wrapAsync from "../utils/wrapAsync.js";
 import { isLoggedIn, isOwner, validateListing } from "../middleware.js";
-
+import multer from "multer";
+const upload = multer({ dest: "uploads/" });
 const router = express.Router({ mergeParams: true }); // ✅ Important fix
 
 // importing controllers
@@ -18,7 +19,10 @@ import {
 router
   .route("/")
   .get(wrapAsync(index))
-  .post(isLoggedIn, validateListing, wrapAsync(createNewList));
+  //
+  .post(upload.single("listing[image]"), (req, res) => {
+    res.send(req.file);
+  });
 
 // new form route - move this before /:id routes
 router.get("/new", isLoggedIn, newFormRoute);

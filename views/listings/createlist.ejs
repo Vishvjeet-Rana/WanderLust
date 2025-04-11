@@ -9,6 +9,7 @@
       <form
         action="/listings"
         method="POST"
+        enctype="multipart/form-data"
         novalidate
         class="needs-validation"
       >
@@ -41,8 +42,8 @@
         </div>
 
         <div class="mb-3">
-          <label for="image" class="form-label">Enter Image URL/Link :</label>
-          <input class="form-control" type="text" name="listing[image]" />
+          <label for="image" class="form-label">Upload Listing Image :</label>
+          <input class="form-control" type="file" name="listing[image]" />
         </div>
 
         <div class="row">

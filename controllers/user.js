@@ -1,7 +1,7 @@
 import User from "../model/user.js";
 
 // sign up
-export const signupUser = async (req, res) => {
+export const signupUser = async (req, res, next) => {
   try {
     let { username, email, password } = req.body;
     const newUser = new User({ email, username });
@@ -24,7 +24,7 @@ export const signupUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   req.flash("success", "Welcome back!");
 
-  const redirectUrl = req.session.redirectUrl || "/listings";
+  const redirectUrl = res.locals.redirectUrl || "/listings";
 
   res.redirect(redirectUrl);
 };
