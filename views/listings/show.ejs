@@ -1,5 +1,82 @@
 <%-layout("/layouts/boilerplate")%>
 
+<!-- <script>
+  const mapToken = "<%= process.env.MAP_TOKEN %>";
+  // const listing = JSON.parse("<%-JSON.stringify(JSON.stringify(listing))%>");
+</script> -->
+
+<script>
+  const mapToken = "<%= process.env.MAP_TOKEN %>";
+  const listing = <%- JSON.stringify(listing) %>;
+
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('Full listing object:', listing);
+    console.log('Geometry:', listing.geometry);
+    console.log('Raw coordinates:', listing.geometry.coordinates);
+    console.log('Coordinates type:', typeof listing.geometry.coordinates);
+    console.log('Is array:', Array.isArray(listing.geometry.coordinates));
+
+    if (!mapToken) {
+      console.error('Map token is missing!');
+      document.getElementById('map').innerHTML = '<p>Map token not configured</p>';
+    } else if (!listing || !listing.geometry || !listing.geometry.coordinates) {
+      console.error('Listing coordinates are missing!');
+      document.getElementById('map').innerHTML = '<p>Location data not available</p>';
+    } else {
+      try {
+        // Extract and format coordinates properly
+        let coordinates = listing.geometry.coordinates;
+
+        // Handle different coordinate formats
+        if (Array.isArray(coordinates) && coordinates.length >= 2) {
+          // If it's already an array [lng, lat]
+          coordinates = [parseFloat(coordinates[0]), parseFloat(coordinates[1])];
+        } else if (coordinates.lng && coordinates.lat) {
+          // If it's an object {lng: x, lat: y}
+          coordinates = [parseFloat(coordinates.lng), parseFloat(coordinates.lat)];
+        } else if (coordinates.lon && coordinates.lat) {
+          // If it's an object {lon: x, lat: y}
+          coordinates = [parseFloat(coordinates.lon), parseFloat(coordinates.lat)];
+        } else {
+          throw new Error('Invalid coordinate format');
+        }
+
+        console.log('Processed coordinates:', coordinates);
+
+        // Validate coordinates
+        if (coordinates[0] < -180 || coordinates[0] > 180 ||
+            coordinates[1] < -90 || coordinates[1] > 90) {
+          throw new Error('Coordinates out of valid range');
+        }
+
+        mapboxgl.accessToken = mapToken;
+
+        const map = new mapboxgl.Map({
+          container: "map",
+          style: 'mapbox://styles/mapbox/streets-v12',
+          center: coordinates, // Use processed coordinates
+          zoom: 10,
+        });
+
+        const marker = new mapboxgl.Marker({ color: "red" })
+          .setLngLat(coordinates) // Use processed coordinates
+          .setPopup(
+            new mapboxgl.Popup({ offset: 25 }).setHTML(
+              `<b><h5>${listing.location}</h5></b>
+              <p>Exact location provided after booking!</p>`
+            )
+          )
+          .addTo(map);
+
+        console.log('Map initialized successfully');
+      } catch (error) {
+        console.error('Error initializing map:', error);
+        document.getElementById('map').innerHTML = '<p>Error loading map: ' + error.message + '</p>';
+      }
+    }
+  });
+</script>
+
 <div class="row">
   <div class="col-8 offset-2">
     <h2 style="color: #ba575e; font-weight: bold" class="mt-3">
@@ -9,7 +86,7 @@
 
   <div class="card col-6 offset-2 mt-3 show-card">
     <img
-      src="<%=listing.image%>"
+      src="<%=listing.image.url%>"
       class="card-img-top show-image object-fit-cover"
       alt="listing_image"
     />
@@ -155,9 +232,9 @@
 
     <!-- showing reviews -->
 
-    <h3 class="mt-5"><b>All Reviews</b></h3>
-
+    <% if(listing.reviews.length > 0) { %>
     <div class="row">
+      <h3 class="mt-5"><b>All Reviews</b></h3>
       <% listing.reviews.forEach((rev) => { %>
       <div class="card mb-2 p-2 card review-card col-5 ms-3 mb-3">
         <div class="card-body">
@@ -180,6 +257,14 @@
       </div>
       <% }) %>
     </div>
+    <%}%>
+    <hr />
+  </div>
+
+  <!-- map will be visible here -->
+  <div class="col-6 offset-3 mb-3">
+    <h3>Where you'll be</h3>
+    <div id="map"></div>
   </div>
 </div>
 
@@ -192,3 +277,5 @@
     }
   }
 </script>
+
+<!-- <script src="/js/map.js"></script> -->

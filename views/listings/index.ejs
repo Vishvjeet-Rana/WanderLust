@@ -1,6 +1,129 @@
 <%- layout("/layouts/boilerplate")%>
+
+<style>
+  #filters {
+    display: flex;
+    flex-wrap: wrap;
+    /* background-color: aquamarine; */
+    align-items: center;
+  }
+  .filter {
+    margin-right: 2rem;
+    margin-top: 1.5rem;
+
+    text-align: center;
+    opacity: 0.7;
+  }
+  .filter:hover {
+    opacity: 1;
+    color: black;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: all ease 0.6s;
+  }
+  .filter p {
+    font-size: 0.8rem;
+  }
+  .tax-info {
+    display: none;
+  }
+  .tax-toggle {
+    border: 1px solid gray;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-left: 2rem;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  /*  Media Query to hide .filter elements on small screens */
+  @media (max-width: 1024px) {
+    .filter {
+      display: none;
+    }
+  }
+</style>
+
 <body>
-  <div class="container">
+  <div id="filters" class="container">
+    <!-- first filter -->
+    <div class="filter">
+      <div><i class="fa-solid fa-fire"></i></div>
+      <p>Trending</p>
+    </div>
+    <!-- second filter -->
+    <div class="filter">
+      <div><i class="fa-solid fa-bed"></i></div>
+      <p>Rooms</p>
+    </div>
+    <!-- third filter -->
+    <div class="filter">
+      <div><i class="fa-solid fa-city"></i></div>
+      <p>Iconic cities</p>
+    </div>
+    <!-- fourth filter -->
+    <div class="filter">
+      <div><i class="fa-solid fa-umbrella-beach"></i></div>
+      <p>Beach</p>
+    </div>
+    <!-- fifth filter -->
+    <div class="filter">
+      <div><i class="fa-solid fa-person-swimming"></i></div>
+      <p>Pools</p>
+    </div>
+    <!-- sixth filter -->
+    <div class="filter">
+      <div><i class="fa-solid fa-snowman"></i></div>
+      <p>Snow flakes</p>
+    </div>
+    <!-- seventh filter -->
+    <div class="filter">
+      <div><i class="fa-solid fa-umbrella"></i></div>
+      <p>Rainy</p>
+    </div>
+    <!-- eigth filter -->
+    <div class="filter">
+      <div><i class="fa-solid fa-mountain-city"></i></div>
+      <p>Mountain city</p>
+    </div>
+    <!-- ninth filter -->
+    <div class="filter">
+      <div><i class="fa-brands fa-fort-awesome"></i></div>
+      <p>Castles</p>
+    </div>
+    <!-- tenth filter -->
+    <div class="filter">
+      <div><i class="fa-solid fa-campground"></i></div>
+      <p>Camping</p>
+    </div>
+    <!-- eleventh filter -->
+    <!-- <div class="filter">
+      <div><i class="fa-solid fa-tree"></i></div>
+      <p>Jungle safari</p>
+    </div> -->
+    <!-- twelveth filter -->
+    <div class="filter">
+      <div><i class="fa-solid fa-tractor"></i></div>
+      <p>Farms</p>
+    </div>
+
+    <!-- tax switch part -->
+    <div class="tax-toggle">
+      <div class="form-check-reverse form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="switchCheckDefault"
+        />
+        <label class="form-check-label" for="switchCheckDefault"
+          >Display total after taxes</label
+        >
+      </div>
+    </div>
+  </div>
+  <div class="container mt-3">
     <h2
       style="
         color: #fe424d;
@@ -9,7 +132,7 @@
         font-weight: bolder;
       "
     >
-      Welcome, @<%if(currUser) {%><%=currUser.username%>. <%} else {%> Guest.
+      Welcome, @<%if(currUser) {%><%=currUser.username%>. <%} else {%> Guest
       <%}%>
     </h2>
     <br />
@@ -21,7 +144,7 @@
         <div class="col main-card">
           <div class="card h-100">
             <img
-              src="<%= listing.image %>"
+              src="<%= listing.image.url %>"
               class="card-img-top object-fit-cover"
               alt="listing_image"
               style="height: 250px"
@@ -32,7 +155,8 @@
                 <b><%=listing.title%></b>
                 <br />
                 &#8377; <%= listing.price ?
-                listing.price.toLocaleString("en-IN") : 'N/A' %> /night
+                listing.price.toLocaleString("en-IN") : 'N/A' %> /night &nbsp;
+                &nbsp; <i class="tax-info">+18% GST</i>
               </p>
             </div>
           </div>
@@ -48,3 +172,17 @@
       <% } %>
     </ul> -->
 </body>
+
+<script>
+  let taxSwitch = document.getElementById("switchCheckDefault");
+  taxSwitch.addEventListener("click", () => {
+    let taxInfo = document.getElementsByClassName("tax-info");
+    for (let info of taxInfo) {
+      if (info.style.display != "inline") {
+        info.style.display = "inline";
+      } else {
+        info.style.display = "none";
+      }
+    }
+  });
+</script>

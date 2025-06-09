@@ -8,7 +8,7 @@ export const createReview = async (req, res) => {
   listing.reviews.push(newReview);
 
   await newReview.save();
-  await listing.save();
+  await listing.save({ validateBeforeSave: false });
 
   req.flash("success", "New Review Added");
 

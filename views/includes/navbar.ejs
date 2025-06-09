@@ -1,8 +1,30 @@
+<style>
+  .btn-search {
+    background-color: #fe424d;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    border-radius: 2rem;
+  }
+  .btn-search:hover {
+    background-color: #fe424d;
+    color: #fff;
+  }
+  .btn-search i {
+    display: inline;
+    margin-right: 0.5rem;
+  }
+  .search-input {
+    border-radius: 2rem;
+    padding: 0.5rem 2.5rem 0.5rem 2.5rem;
+  }
+</style>
+
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
     <a
       class="navbar-brand d-flex align-items-center justify-content-end"
-      href="/"
+      href="/listings"
       ><i class="fa-brands fa-airbnb"></i
       ><span style="font-size: 1.2rem">WanderLust</span></a
     >
@@ -17,14 +39,27 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link" href="/">Home</a>
-        <a class="nav-link" href="/listings">All Listings</a>
-        <a class="nav-link" href="/listings/new">Add New Listing</a>
+        <a class="nav-link" href="/listings">Explore</a>
       </div>
       <div class="navbar-nav ms-auto">
+        <form class="d-flex" role="search">
+          <input
+            class="form-control me-2 search-input"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+
+          <button class="btn btn-search" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>&nbsp;Search
+          </button>
+        </form>
+      </div>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="/listings/new">AirBnb your home</a>
         <% if(!currUser) {%>
-        <a class="nav-link" href="/signup">SignUp</a>
-        <a class="nav-link" href="/login">LogIn</a>
+        <a class="nav-link" href="/signup"><b>SignUp</b></a>
+        <a class="nav-link" href="/login"><b>LogIn</b></a>
         <%}%> <% if(currUser) {%>
         <a class="nav-link signup-link" href="/logout">
           <button onclick="confirmLogout(event)" class="btn btn-danger">

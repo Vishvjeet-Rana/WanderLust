@@ -1,3 +1,12 @@
+import dotenv from "dotenv";
+
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config();
+  console.log(process.env.CLOUD_API_KEY, "app.js");
+}
+
+// console.log(process.env.SECRET);
+
 import express from "express";
 import mongoose from "mongoose";
 import path from "path";
@@ -7,12 +16,13 @@ import methodOverride from "method-override";
 import engine from "ejs-mate";
 import ExpessError from "./utils/ExpressError.js";
 import session from "express-session";
+import MongoStore from "connect-mongo";
 import flash from "connect-flash";
 import passport from "passport";
 import LocalStrategy from "passport-local";
 import User from "./model/user.js";
-import multer from "multer";
-const upload = multer({ dest: "uploads/" });
+// import multer from "multer";
+// const upload = multer({ dest: "uploads/" });
 
 import listingsRouter from "./routes/listing.js";
 import reviewsRouter from "./routes/review.js";
@@ -34,11 +44,24 @@ app.use(express.static(path.join(__dirname, "/public")));
 main().catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust");
+  await mongoose.connect(process.env.ATLASDB_URL);
 }
 
+const store = MongoStore.create({
+  mongoUrl: process.env.ATLASDB_URL,
+  crypto: {
+    secret: process.env.MY_SECRET,
+  },
+  touchAfter: 24 * 3600,
+});
+
+store.on("error", (err) => {
+  console.log("ERROR IN MONGODB SESSION", err);
+});
+
 const sessionOptions = {
-  secret: "mysupersecret",
+  store,
+  secret: process.env.MY_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -49,7 +72,7 @@ const sessionOptions = {
 };
 
 app.get("/", (req, res) => {
-  res.send("hello this is root");
+  res.redirect("/listings");
 });
 
 app.use(session(sessionOptions));
@@ -82,6 +105,7 @@ app.all("*", (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+  console.error("ERROR:", err); // Log the full error object to console
   let { statusCode = 500, message = "Something went wrong!" } = err;
   res.status(statusCode).render("listings/error.ejs", { message });
 });

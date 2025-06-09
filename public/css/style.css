@@ -137,3 +137,16 @@ label {
 .review-card {
   border: 1px solid gray !important;
 }
+
+/* Map Styling */
+#map {
+  height: 400px;
+  width: 80vh;
+  border: 2px solid burlywood;
+}
+
+/* edit page's listing image */
+#edit-org-image {
+  height: 250px;
+  width: 300px;
+}
